@@ -1,0 +1,161 @@
+
+<!DOCTYPE html>
+{% load staticfiles %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>商品后台管理系统</title>
+    <link rel="stylesheet" href="{% static 'bs/css/bootstrap.min.css' %}">
+    {#    引入jqgrid主题css#}
+    <link rel="stylesheet" href="{% static 'bs/css/ui.jqgrid-bootstrap.css' %}">
+    {#    引入js文件#}
+    <script src="{% static 'bs/js/jquery-3.3.1.min.js' %}"></script>
+    <script src="{% static 'bs/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'jqgrid/js/grid.locale-cn.js' %}"></script>
+    <script src="{% static 'jqgrid/js/jquery.jqGrid.min(1).js' %}"></script>
+
+
+    <!--发送按钮倒计时代码-->
+    <script type="text/javascript">
+        var countdown = 60;
+
+        function settime(obj) {
+            if (countdown === 0) {
+                obj.removeAttribute("disabled");
+                obj.value = "免费获取验证码";
+                countdown = 60;
+                return;
+            } else {
+                obj.setAttribute("disabled", true);
+                obj.value = "重新发送(" + countdown + ")";
+                countdown--;
+            }
+            setTimeout(function () {
+                    settime(obj)
+                }
+                , 1000)
+        }
+
+        <!--向后台通过ajax发送手机号码数据-->
+        $(function () {
+            $("#forcode").click(function () {
+                $.ajax({
+                    type: "post",
+                    url: "{% url 'homeapp:get_code' %}",
+                    datatype: "json",
+                    data: $("#loginForm").serialize(),
+                    success: function (data) {
+                        if (data.state){
+                            alert(data.info)
+                        }
+                    }
+                });
+            });
+
+            $("#loginButtonId").click(function () {
+                $.ajax({
+                    type: "post",
+                    url: "{% url 'homeapp:user_login' %}",
+                    datatype: "json",
+                    data: $("#loginForm").serialize(),
+                    success: function (data) {
+                        if (data.state){
+                            location.href='{% url 'homeapp:home' %}'
+                        }else{
+                            alert(data.info)
+                        }
+                    }
+                });
+            });
+
+
+        });
+
+        window.onload = function () {
+            $("#shouyanzheng").html("请输入手机号");
+            $("#shouyanzheng2").html("请输入用户名")
+        };
+
+
+        function panduan1() {
+            var geshi = $("#mobile").val();
+            var pl = /^(13[0-9]\d{8}|15[0-35-9]\d{8}|18[0-9]\{8}|14[57]\d{8})$/;
+             if (geshi.length == 0){
+                 $("#shouyanzheng").css("color","red");
+                $("#shouyanzheng").html("手机号不能为空")
+
+            }
+            else if (geshi.length<11 || geshi.length>11 || isNaN(geshi)){
+                $("#shouyanzheng").css("color","red");
+                $("#shouyanzheng").html("手机号不符合要求")
+            }
+            else {
+                $("#shouyanzheng").css("color","blue");
+                $("#shouyanzheng").html("正确")
+             }
+        }
+
+                function panduan2() {
+            var geshi2 = $("#basic-url").val();
+            var pl = /^(13[0-9]\d{8}|15[0-35-9]\d{8}|18[0-9]\{8}|14[57]\d{8})$/;
+             if (geshi2.length == 0){
+                 $("#shouyanzheng2").css("color","red");
+                $("#shouyanzheng2").html("用户名不能为空")
+            }
+            else {
+                $("#shouyanzheng2").css("color","blue");
+                $("#shouyanzheng2").html("正确")
+             }
+        }
+
+    </script>
+
+</head>
+
+
+<body>
+
+<!--手机号码输入框代码-->
+<div class="container">
+    <div class="form-group">
+        <div class="col-lg-10">
+            <form id="loginForm" role="form" action="" method="post" class="form-horizontal">
+
+                <label for="mobile" class="">手机号码</label>
+                <div class="input-group m-bot15">
+                    <input type="text" onblur="panduan1()" class="form-control" required id="mobile" name="mobile" placeholder="手机号码">
+                    <span></span>
+                    <span class="input-group-btn">
+                         <input type="button" id="forcode" onclick="settime(this)" value="免费获取验证码"
+                                class="btn btn-success" >
+                        </span>
+                </div>
+                <span id="msgDiv"></span>
+                <p class="help-block" id="shouyanzheng"></p>
+
+
+
+                <label for="basic-url" class="">用户名</label>
+                <div class="input-group">
+                    <input type="text" class="form-control" id="basic-url" required minlength="5" name="name" onblur="panduan2()">
+                    <span class="input-group-addon"></span>
+                </div>
+                <p class="help-block" id="shouyanzheng2"></p>
+
+
+                <label for="basic-url" class="">验证码</label>
+                <div class="input-group">
+                    <input type="text" class="form-control" id="basic-url" required name="code">
+                </div>
+                <p class="help-block"></p>
+                <div class="input-group">
+                    <input class="btn btn-success" type="button" id="loginButtonId" value="登录">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
