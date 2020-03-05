@@ -37,7 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'homeapp',
+    'homeapp',#首页app（登录页和主页）
+    'rotationapp',#轮播图管理
 ]
 
 MIDDLEWARE = [
