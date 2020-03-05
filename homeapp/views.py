@@ -3,7 +3,7 @@ import re
 # 导入json串，httpresponse
 from django.http import HttpResponse, JsonResponse
 # 用于渲染模板
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 # 跳过csrf
 from django.views.decorators.csrf import csrf_exempt
 # 导入redis
@@ -33,6 +33,7 @@ def user_login(request):
     # 获取前端三个框的输入值
     mobile = request.POST.get("mobile")
     name = request.POST.get("name")
+    re = request.session["name"] = name
     code = request.POST.get("code")
     if mobile:
         if name:
@@ -71,3 +72,17 @@ def get_code(request):
                 return JsonResponse({'state': 0, 'info': '验证码发送成功'})
         return JsonResponse({'state': 1, 'info': '手机号不合法'})
     return JsonResponse({'state': 1, 'info': '手机号不能为空'})
+@csrf_exempt
+def index(request):
+
+    name2 = request.session.get('name')
+    print(name2,22222)
+    if name2==None:
+        return redirect("homeapp:login_form")
+    else:
+        print(name2)
+        return render(request, 'home.html',{'name2':name2})
+@csrf_exempt
+def tuichu(request):
+    del request.session['name']
+    return redirect("homeapp:login_form")

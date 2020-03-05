@@ -11,5 +11,8 @@ urlpatterns = [
     path('user_login/', views.user_login,name='user_login'),
     # 发送验证码
     path('get_code/', views.get_code,name='get_code'),
+    path('index/', views.index,name='index'),
+    path('tuichu/', views.tuichu,name='tuichu'),
+
 
 ]

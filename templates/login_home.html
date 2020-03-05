@@ -1,19 +1,19 @@
 
 <!DOCTYPE html>
-{% load staticfiles %}
+{% load static%}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>商品后台管理系统</title>
-    <link rel="stylesheet" href="{% static 'bs/css/bootstrap.min.css' %}">
+    <title>持明法洲后台管理系统</title>
+    <link rel="stylesheet" href="{% static 'boot/css/bootstrap.min.css' %}">
     {#    引入jqgrid主题css#}
-    <link rel="stylesheet" href="{% static 'bs/css/ui.jqgrid-bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'boot/css/ui.jqgrid-bootstrap.css' %}">
     {#    引入js文件#}
-    <script src="{% static 'bs/js/jquery-3.3.1.min.js' %}"></script>
-    <script src="{% static 'bs/js/bootstrap.min.js' %}"></script>
-    <script src="{% static 'jqgrid/js/grid.locale-cn.js' %}"></script>
-    <script src="{% static 'jqgrid/js/jquery.jqGrid.min(1).js' %}"></script>
+    <script src="{% static 'boot/js/jquery-3.3.1.min.js' %}"></script>
+    <script src="{% static 'boot/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'jqgrid/js/i18n/grid.locale-cn.js' %}"></script>
+    <script src="{% static 'boot/js/jquery.jqGrid.min(1).js' %}"></script>
 
 
     <!--发送按钮倒计时代码-->
@@ -21,7 +21,7 @@
         var countdown = 60;
 
         function settime(obj) {
-            if (countdown === 0) {
+            if (countdown == 0) {
                 obj.removeAttribute("disabled");
                 obj.value = "免费获取验证码";
                 countdown = 60;
@@ -61,7 +61,7 @@
                     data: $("#loginForm").serialize(),
                     success: function (data) {
                         if (data.state){
-                            location.href='{% url 'homeapp:home' %}'
+                            location.href='{% url 'rotationapp:index'%}'
                         }else{
                             alert(data.info)
                         }
@@ -150,6 +150,7 @@
                 </div>
                 <p class="help-block"></p>
                 <div class="input-group">
+                    {#                        <input class="btn btn-success" type="submit" id="loginButtonId" value="登录">#}
                     <input class="btn btn-success" type="button" id="loginButtonId" value="登录">
                 </div>
             </form>
