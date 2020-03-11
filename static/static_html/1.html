@@ -1,0 +1,49 @@
+<div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">添加专辑</h4>
+            </div>
+            <form id="form1" method="post" enctype="multipart/form-data">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="title1">标题：</label>
+                        <input type="text" class="form-control" id="title1" name="title1">
+                    </div>
+                    <div class="form-group">
+                        <label for="grade1">分数：</label>
+                        <input type="text" class="form-control" id="grade1" name="grade1">
+                    </div>
+                    <div class="form-group">
+                        <label for="author1">作者：</label>
+                        <input type="text" class="form-control" id="author1" name="author1">
+                    </div>
+                    <div class="form-group">
+                        <label for="announcer1">播音员：</label>
+                        <input type="text" class="form-control" id="announcer1" name="announcer1">
+                    </div>
+                    <div class="form-group">
+                        <label for="introduce1">简介说明：</label>
+                        <input type="text" class="form-control" id="introduce1" name="introduce1">
+                    </div>
+                    <div class="form-group">
+                        <label for="state1">状态：</label>
+                        <select name="state1" id="state1" class="form-control">
+                            <option value="展示" selected>展示</option>
+                            <option value="不展示">不展示</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="urls1">上传封面：（请上传jpg、png格式的图片）</label>
+                        <input type="file" class="form-control" id="urls1" name="urls1">
+                    </div>
+                </div>
+            </form>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" onclick="f4()" data-dismiss="modal">提交</button>
+            </div>
+        </div>
+    </div>
+</div>

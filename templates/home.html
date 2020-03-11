@@ -1,4 +1,3 @@
-
 {% load static %}
 {% load cache %}
 
@@ -20,6 +19,9 @@
         <script src="{% static 'jqgrid/js/i18n/grid.locale-cn.js' %}"></script>
         <script src="{% static 'echarts/echarts.min.js' %}"></script>
         <script src="{% static 'echarts/china.js' %}"></script>
+        <link rel="icon" href="{% static 'img/arrow-up.png' %}" type="image/x-icon">
+        <script src="{% static 'kindeditor/kindeditor-all-min.js' %}"></script>
+        <script src="{% static 'kindeditor/lang/zh-CN.js' %}"></script>
         <title>Title</title>
         <script>
             function dele() {
@@ -85,16 +87,34 @@
                             </div>
                         </div>
                     </div>
-
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             <div class="panel-title">
-                                <a href="#dd" data-toggle="collapse" data-parent="#panel_parent">专辑管理</a>
+                                <a href="#dd" data-toggle="collapse" data-parent="#panel_parent">文章管理</a>
                             </div>
                         </div>
                         <div id="dd" class="panel-collapse collapse ">
                             <div class="panel-body">
                                 <ul class="nav nav-pills nav-stacked">
+                                    <li><a style="font-weight: bold;"
+                                           href="javascript:$('#centerLayout').load('{% static "static_html/article.html" %}')">文章列表</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <div class="panel-title">
+                                <a href="#cc" data-toggle="collapse" data-parent="#panel_parent">专辑管理</a>
+                            </div>
+                        </div>
+                        <div id="cc" class="panel-collapse collapse ">
+                            <div class="panel-body">
+                                <ul class="nav nav-pills nav-stacked">
+                                    <li><a style="font-weight: bold;"
+                                           href="javascript:$('#centerLayout').load('{% static "static_html/zhuanji1.html" %}')">专辑管理</a>
+                                    </li>
                                 </ul>
                             </div>
                         </div>

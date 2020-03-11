@@ -21,4 +21,6 @@ urlpatterns = [
     path('homeapp/', include('homeapp.urls')),
     path('rotationapp/', include('rotationapp.urls')),
     path('userapp/', include('userapp.urls')),
+    path('articleapp/', include('articleapp.urls')),
+    path('albumapp/', include('albumapp.urls')),
 ]

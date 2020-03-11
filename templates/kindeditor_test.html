@@ -1,0 +1,40 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="{% static 'kindeditor/kindeditor-all-min.js' %}"></script>
+    <script src="{% static 'kindeditor/lang/zh-CN.js' %}"></script>
+    <!--
+    //第二步，
+    //第一个参数可用其它CSS选择器，匹配多个textarea时只在第一个元素上加载编辑器。
+    //通过K.create函数的第二个参数，可以对编辑器进行配置，具体参数请参考 编辑器初始化参数 。
+    -->
+    <!--<script>
+        KindEditor.ready(function (K) {
+            window.editor = K.create('#editor_id');
+        });
+    </script>-->
+    <script>
+        KindEditor.ready(function (k) {
+            k.create('#editor_id',{
+                width:'1000px', //指定编辑器的宽度 优先级高于textarea
+                height:'400px',//指定编辑器的高度
+                //items:[] 控制编辑器工具栏数量
+                resizeType:2,//2、都可修改，1、修改高度，0、不可修改，指定编辑器宽高
+                designMode:true,//默认工具栏不可使用，false
+                uploadJson:'/articleapp/upload_img/',//指定上传图片的url
+                fileManagerJson:'/articleapp/get_all_img/',//获取曾经上传过的所有图片
+                allowFileManager:true,//显示查看所有图片的按钮
+            });
+        });
+    </script>
+</head>
+<body>
+<!--第一步，添加一个textarea，从kindeditor文档复制-->
+<textarea id="editor_id" name="content" style="width:700px;height:300px;">
+&lt;strong&gt;HTML内容&lt;/strong&gt;
+</textarea>
+</body>
+</html>

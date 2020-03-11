@@ -1,0 +1,275 @@
+
+<script>
+    $(function () {
+        $("#albumTable").jqGrid({
+            url: "/albumapp/getAllAlbum/",
+            editurl: "",
+            styleUI: "Bootstrap",
+            datatype: "JSON",
+            autowidth: true,
+            height: 500,
+            viewrecords: true,
+            pager: "#albumPager",
+            rowNum: 2,
+            rowList: [5, 10, 15],
+            rownumbers: true,
+            multiselect: true,
+            colNames: ["编号", "标题", "分数", "作者", "播音员", "章节数", "专辑简介", "状态", "发行时间", "上传时间", "插图","操作"],
+            colModel: [
+                {name: "id", hidden: true},
+                {
+                    name: "title", editable: true,
+                    editrules: {required: true}
+                },
+                {
+                    name: "score", editable: true,
+                    editrules: {required: true, number: true, minValue: 1, maxValue: 10}
+                },
+                {
+                    name: "author", editable: true,
+                    editrules: {required: true}
+                },
+                {
+                    name: "broadcast", editable: true,
+                    editrules: {required: true}
+                },
+                {
+                    name: "count", editable: true,
+                    editrules: {required: true, number: true, minValue: 1}
+                },
+                {
+                    name: "brief", editable: true,
+                    editrules: {required: true}
+                },
+                {
+                    name: "status", editable: true, edittype: "select",
+                    editoptions: {
+                        value: "1:展示;2:不展示"
+                    }
+                },
+                {
+                    name: "publishDate", editable: true, edittype: "date",
+                    editrules: {required: true}
+                },
+                {
+                    name: "createDate", editable: true, edittype: "date",
+                    editrules: {required: true}
+                },
+                {
+                    name: "cover", editable: true, edittype: "file",
+                    editoptions: {
+                        enctype: "multipart/form-data"
+                    },
+                    formatter: function (cellvalue, options, rowObject) {
+                        return "<img style='height: 80px;width: 180px' src='/static/" + cellvalue + " '/>"
+                    }
+                },
+                {
+                    name: "options",
+                   formatter: function (cellvalue, options, rowObject) {
+                        var result = '';
+                        result += "<a href='javascript:void(0)' onclick=\"showModel('" + rowObject.id + "')\" class='btn btn-lg' title='查看详情'> <span class='glyphicon glyphicon-th-list'>编辑</span></a><br>" +
+                            "<a href='javascript:void(0)' onclick=\"delete1('" + rowObject.id + "')\" class='btn btn-lg' title='删除'> <span class='glyphicon glyphicon-king'>删除</span></a>";
+                        return result;
+                    }
+                }
+
+            ],
+            subGrid: true,          // 开启二级表格
+            // 形参  是表格的id以及专辑的id
+            subGridRowExpanded: function (subGridId, albumId) {
+                addSubGrid(subGridId, albumId);     // 完成二级表格的生成
+            }
+        }).jqGrid("navGrid", "#albumPager", {
+                add: true, edit: true, del: true, search: true, refresh: true, edittext: "编辑", addtext: "添加", deltext: "删除"
+            },
+        )
+    });
+
+    // 生成二级表格
+    function addSubGrid(subGridId, albumId) {
+        // 根据subGridId 定义对应子表格的table容器的id
+        subGridTableId = subGridId + "table";
+        // 根据subGridId 定义对应子表格的分页容器的id
+        subGridPagerId = subGridId + "pager";
+        // 生成容器
+        $('#' + subGridId).html(
+            "<table id='" + subGridTableId + "'></table><div id='" + subGridPagerId + "'></div>"
+        );
+        // 根据准备好的容器来生成二级表格
+        $('#' + subGridTableId).jqGrid({
+            // 查询章节时需要根据对应的专辑id进行查询
+            url: "/albumapp/getChapter/?albumId=" + albumId,
+            datatype: "json",
+            styleUI: "Bootstrap",
+            autowidth: true,
+            pager: "#" + subGridPagerId,
+            viewrecords: true,
+            caption: "章节管理",
+            rowNum: 3,
+            rowList: [3, 6, 10],
+            multiselect: true,
+            toolbar: [true, "top"],
+            colNames: ["编号", "标题", "大小", "时长", "上传时间", "音频", "操作"],
+            colModel: [
+                {name: "id", align: "center"},
+                {name: "title", align: "center"},
+                {name: "size", align: "center"},
+                {name: "duration", align: "center"},
+                {name: "createDate", align: "center"},
+                {
+                    name: "url", align: "center", formatter: function (cellvalue, options, row) {
+                        return "<a href=\"javascript:void(0)\" class=\"btn btn-primary\" onclick=\"playAudio('" + cellvalue + "')\"><span class=\"glyphicon glyphicon-play\"></span> 播放</a>";
+                    }
+                },
+                {
+                    name: "option", align: "center", formatter: function () {
+                        // 在次数追加两个按钮  删除  与  修改
+                        return '<a class="btn btn-primary" onclick="update()"> <span class="glyphicon glyphicon-edit"></span> 修改</a> ' +
+                            '<a class="btn btn-danger"  > <span class="glyphicon glyphicon-edit"></span> 删除</a> ';
+                    }
+                },
+            ],
+
+        });
+        // 追加添加按钮
+        $("#t_albumTable_0ee05392-7b76-11e9-bd6f-005056c00001table").append('<button class="btn btn-primary" onclick="showAddChapter()">添加章节</button>')
+    }
+
+    // 展示添加章节的模态框  完成章节信息的填写
+    function showAddChapter() {
+        // 调用展示模态框的方法  信息填写后保存
+    }
+
+    // 专辑的修改
+    function update() {
+
+    }
+
+    // 播放的方法
+    function playAudio(cellvalue) {
+        $("#playAudioDiv").modal("show");
+        $('#playAudioId').attr("src", "/static/pics/" + cellvalue)
+    }
+    function showAlbum() {
+        $("#mymodel").modal('show');
+    }
+    function addblum() {
+        $.ajax({
+            url: "/albumapp/addalbum/",
+            type: "get",
+            datatype: "json",
+            data: $("#addAlbumFrom").serialize(),     // 获取表单数据
+            success: function (data) {
+                // 根据后台返回的状态码进行不同的处理
+                console.log(data)
+                $("#mymodel").modal("hide");
+            }
+        });
+    }
+
+    function delete1(id) {
+        $.ajax({
+            url: "/albumapp/delete/",
+            type: "get",
+            datatype: "json",
+            data: 'id=' + id,
+            processData: false,         // 使表单对象不被调整
+            contentType: false,         // 不要设置contentType请求头
+            success: function (data) {
+                console.log(data);
+                if (data.error === 1) {
+                    alert(data.msg)
+                } else {
+                    $("#myModal3").modal("hide");
+                    // 刷新表格
+                    $("#articleTable").trigger("reloadGrid")
+                }
+            }
+        })
+    }
+</script>
+
+<div class="page-header">
+    <h2>专辑与章节管理</h2>
+</div>
+<ul class="nav nav-tabs">
+    <li class="active" style="font-weight: bold"><a>专辑与章节信息</a></li>
+    <li><a style="font-weight: bold" onclick="showAlbum();">添加专辑</a></li>
+</ul>
+<!--播放音频所使用的div-->
+<div id="playAudioDiv" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <audio id="playAudioId" src="" controls></audio>
+    </div>
+</div>
+
+<div class="panel panel-default">
+    <table id="albumTable"></table>
+    <div id="albumPager" style="width: auto;height: 50px"></div>
+</div>
+<!--模态框主体-->
+<div class="modal fade" tabindex="-1" role="dialog" id="mymodel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">Modal title</h4>
+            </div>
+            <form id="addAlbumFrom" method="post" enctype="multipart/form-data">
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="title">标题：</label>
+                    <input type="text" class="form-control" id="title" name="title">
+                </div>
+                <div class="form-group">
+                    <label for="score">分数：</label>
+                    <input type="text" class="form-control" id="score" name="score">
+                </div>
+                <div class="form-group">
+                    <label for="author">作者：</label>
+                    <input type="text" class="form-control" id="author" name="author">
+                </div>
+                <div class="form-group">
+                    <label for="broadcast">播音员：</label>
+                    <input type="text" class="form-control" id="broadcast" name="broadcast">
+                </div>
+                <div class="form-group">
+                    <label for="count">章节数：</label>
+                    <input type="text" class="form-control" id="count" name="count">
+                </div>
+                <div class="form-group">
+                    <label for="brief">专辑介绍：</label>
+                    <input type="text" class="form-control" id="brief" name="brief">
+                </div>
+                <div class="form-group">
+                    <label for="state">状态：</label>
+                    <select name="state" id="state" class="form-control">
+                        <option value="展示" selected>展示</option>
+                        <option value="不展示">不展示</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="publish_date">发行时间：</label>
+                    <input type="text" class="form-control" id="publish_date" name="publish_date">
+                </div>
+                <div class="form-group">
+                    <label for="create_date">上传时间：</label>
+                    <input type="text" class="form-control" id="create_date" name="create_date">
+                </div>
+                <div class="form-group">
+                    <label for="cover">插图：</label>
+                    <input type="file" class="form-control" id="cover" name="cover">
+                </div>
+            </div>
+            </form>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" onclick="addblum()"  data-dismiss="modal">保存</button>
+            </div>
+        </div>
+
+    </div><!-- /.modal-content -->
+</div><!-- /.modal-dialog -->
+<!-- /.modal -->

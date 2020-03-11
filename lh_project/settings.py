@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     'homeapp',#首页app（登录页和主页）
     'rotationapp',#轮播图管理
     'userapp',#用户管理模块
+    'articleapp',#文章管理模块
+    'albumapp'#专辑管理
 ]
 
 MIDDLEWARE = [
